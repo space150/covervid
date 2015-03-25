@@ -1,4 +1,16 @@
-var coverVid = function (elem, width, height) {
+var coverVid = function (elem, options) {
+  console.log(options);
+  var width = options.width,
+      height = options.height,
+      style = options.style || {
+        top: '50%',
+        left: '50%',
+        '-webkit-transform': 'translate(-50%, -50%)',
+        '-ms-transform': 'translate(-50%, -50%)',
+        transform: 'translate(-50%, -50%)'
+      };
+
+  if (!style.position) style.position = 'absolute';
 
   // call sizeVideo on load
   document.addEventListener('DOMContentLoaded', sizeVideo);
@@ -24,13 +36,11 @@ var coverVid = function (elem, width, height) {
     debounce(sizeVideo(), 50);
   };
 
-  // Set necessary styles to position video "center center"
-  elem.style.position = 'absolute';
-  elem.style.top = '50%';
-  elem.style.left = '50%';
-  elem.style['-webkit-transform'] = 'translate(-50%, -50%)';
-  elem.style['-ms-transform'] = 'translate(-50%, -50%)';
-  elem.style.transform = 'translate(-50%, -50%)';
+  // Set styles
+  Object.keys(style).forEach(function(prop) {
+    console.log(prop);
+    elem.style[prop] = style[prop];
+  });
 
   // Set overflow hidden on parent element
   elem.parentNode.style.overflow = 'hidden';
@@ -65,8 +75,10 @@ var coverVid = function (elem, width, height) {
 
 if (window.jQuery) {
   jQuery.fn.extend({
-    'coverVid': function () {
-      coverVid(this[0], arguments[0], arguments[1]);
+    'coverVid': function (opts) {
+      $(this).each(function() {
+        coverVid(this, opts);
+      });
       return this;
     }
   });
