@@ -1,5 +1,4 @@
 var coverVid = function (elem, options) {
-  console.log(options);
   var width = options.width,
       height = options.height,
       style = options.style || {
@@ -13,7 +12,7 @@ var coverVid = function (elem, options) {
   if (!style.position) style.position = 'absolute';
 
   // call sizeVideo on load
-  document.addEventListener('DOMContentLoaded', sizeVideo);
+  $(sizeVideo);
 
   // debounce for resize function
   function debounce(fn, delay) {
@@ -38,7 +37,6 @@ var coverVid = function (elem, options) {
 
   // Set styles
   Object.keys(style).forEach(function(prop) {
-    console.log(prop);
     elem.style[prop] = style[prop];
   });
 
