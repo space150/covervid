@@ -1,20 +1,18 @@
 var coverVid = function (elem, options) {
-  var width = options.width,
-      height = options.height,
+  var width = options.width || elem.width,
+      height = options.height || elem.height,
       style = options.style || {
-        top: '50%',
-        left: '50%',
-        '-webkit-transform': 'translate(-50%, -50%)',
-        '-ms-transform': 'translate(-50%, -50%)',
-        transform: 'translate(-50%, -50%)'
+        top: "50%",
+        left: "50%",
+        "-webkit-transform": "translate(-50%, -50%)",
+        "-ms-transform": "translate(-50%, -50%)",
+        transform: "translate(-50%, -50%)"
       };
 
-  if (!style.position) style.position = 'absolute';
+  if (!style.position) style.position = "absolute";
 
-  // call sizeVideo on load
-  $(sizeVideo);
 
-  // debounce for resize function
+  // Debounce function.
   function debounce(fn, delay) {
     var timer = null;
 
@@ -30,50 +28,39 @@ var coverVid = function (elem, options) {
     };
   }
 
-  // call sizeVideo on resize
-  window.onresize = function () {
-    debounce(sizeVideo(), 50);
-  };
+  // Call sizeVideo on load and resize.
+  $(sizeVideo);
+  $(window).on("resize", debounce(sizeVideo, 150));
 
-  // Set styles
+  // Set styles.
   Object.keys(style).forEach(function(prop) {
     elem.style[prop] = style[prop];
   });
 
-  // Set overflow hidden on parent element
-  elem.parentNode.style.overflow = 'hidden';
 
-
-  // Define the attached selector
   function sizeVideo() {
-
-    // Get parent element height and width
+    // Get parent element height and width.
     var parentHeight = elem.parentNode.offsetHeight;
     var parentWidth = elem.parentNode.offsetWidth;
 
-    // Get native video width and height
-    var nativeWidth = width;
-    var nativeHeight = height;
+    // Get the scale factors.
+    var heightScaleFactor = parentHeight / height;
+    var widthScaleFactor = parentWidth / width;
 
-    // Get the scale factors
-    var heightScaleFactor = parentHeight / nativeHeight;
-    var widthScaleFactor = parentWidth / nativeWidth;
-
-    // Based on highest scale factor set width and height
+    // Based on highest scale factor set width and height.
     if (widthScaleFactor > heightScaleFactor) {
-      elem.style.height = 'auto';
-      elem.style.width = parentWidth+'px';
+      elem.style.height = "auto";
+      elem.style.width = parentWidth+"px";
     } else {
-      elem.style.height = parentHeight+'px';
-      elem.style.width = 'auto';
+      elem.style.height = parentHeight+"px";
+      elem.style.width = "auto";
     }
-
   }
 };
 
 if (window.jQuery) {
   jQuery.fn.extend({
-    'coverVid': function (opts) {
+    "coverVid": function (opts) {
       $(this).each(function() {
         coverVid(this, opts);
       });
