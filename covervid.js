@@ -11,6 +11,8 @@ var coverVid = function (elem, options) {
 
   if (!style.position) style.position = "absolute";
 
+  var aspect = width / height;
+
 
   // Debounce function.
   function debounce(fn, delay) {
@@ -48,12 +50,12 @@ var coverVid = function (elem, options) {
     var widthScaleFactor = parentWidth / width;
 
     // Based on highest scale factor set width and height.
-    if (widthScaleFactor > heightScaleFactor) {
-      elem.style.height = "auto";
-      elem.style.width = parentWidth+"px";
+    if (widthScaleFactor >= heightScaleFactor) {
+      elem.style.height = parentWidth / aspect + "px";
+      elem.style.width = parentWidth + "px";
     } else {
-      elem.style.height = parentHeight+"px";
-      elem.style.width = "auto";
+      elem.style.height = parentHeight + "px";
+      elem.style.width = parentHeight * aspect + "px";
     }
   }
 };
