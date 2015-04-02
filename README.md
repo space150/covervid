@@ -1,39 +1,73 @@
 CoverVid
 ========
 At the core of CoverVid, is the idea of this little CSS snippet being possible...
+
 ```css
 .selector {
-    background-video: url('../foo/bar.mp4 || ../foo/bar.webm');
-    background-size: cover;
-    background-position: center center;
+  background-video: url('../foo/bar.mp4 || ../foo/bar.webm');
+  background-size: cover;
+  background-position: center center;
 }
 ```
+
 Why is it special?
 ------------------
-CoverVid is very lightweight, with only 800 bytes of Javascripts. It is usable in native Javascript and jQuery. Its' logic is parent based, meaning the parent element can be any size (Not necessarily just a full-screen background).
+CoverVid is very lightweight, with only 800 bytes of Javascripts. It is usable
+in native Javascript and jQuery. It's logic is parent based, meaning the parent
+element can be any size (Not necessarily just a full-screen background).
 
 How do I use it?
 ----------------
-1. First pull the project down from <a href="http://github.com/stefanerickson/covervid">GitHub</a>, or install with bower running <code>bower install covervid</code> and link <code>covervid.min.js</code> into your site. Make sure it is loaded after jQuery if using it.
 
-2. It is important to note that the video you target will use its' parent element to scale. With that in mind, we will create some simple markup and add some base styling to size the videos' parent/wrapper element.
+1. First pull the project down from
+   [GitHub](http://github.com/stefanerickson/covervid), or install with
+   bower running `bower install covervid` and link `covervid.min.js` into your
+   site. Make sure it is loaded after jQuery if using it.
 
-    ```html
-    <div class="covervid-wrapper">
-        <video class="covervid-video" autoplay loop poster="img/video-fallback.png">
-            <source src="videos/video.webm" type="video/webm">
-            <source src="videos/video.mp4" type="video/mp4">
-        </video>
-    </div>
-    ```
-    ```css
-    .covervid-wrapper {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-    ```
+2. It is important to note that the video you target will use its' parent
+   element to scale. With that in mind, we will create some simple markup and
+   add some base styling to size the videos' parent/wrapper element.
 
-3. Now, we would simply call <code>coverVid(Container-Element, Video-Width, Video-Height)</code> on the video element, passing through the native dimensions of the video. If you are using jQuery, we would call <code>$('.covervid-video').coverVid(1920, 1080);</code>.
+```html
+<div class="covervid-wrapper">
+  <video class="covervid-video" autoplay loop poster="img/video-fallback.png">
+    <source src="videos/video.webm" type="video/webm">
+    <source src="videos/video.mp4" type="video/mp4">
+  </video>
+</div>
+```
+```css
+.covervid-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+```
+
+3. Now, we can simply call
+
+```js
+$('.covervid-video').coverVid({
+  width: 1920,
+  height: 1080
+});
+```
+
+This will set the video to behave as if it had `background-position: center;`.
+You can pass a style option to change the way the video is positioned:
+
+```js
+$('.covervid-video').coverVid({
+  width: 1920,
+  height: 1080,
+  style: {
+    // anchor bottom left
+    bottom: 0,
+    left: 0
+  }
+});
+```
+
+Note: `style.position` defaults to `absolute`.
